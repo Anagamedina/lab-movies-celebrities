@@ -4,6 +4,8 @@ require('dotenv/config');
 
 // ℹ️ Connects to the database
 require('./db');
+// require('./db.js');
+// require('./db/index.js');
 
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
@@ -22,11 +24,24 @@ require('./config')(app);
 const projectName = 'lab-movies-celebrities';
 const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerCase();
 
+// function capitalized(string){
+//     return string[0].toUpperCase() + string.slice(1).toLowerCase();
+// }
+
 app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
 // 👇 Start handling routes here
-const index = require('./routes/index');
-app.use('/', index);
+const router = require('./routes/index');
+const celebritiesRouter = require('./routes/celebrities.routes.js');
+const moviesRouter = require('./routes/movies.routes.js');
+app.use('/', router); 
+app.use('/celebrities/', celebritiesRouter); 
+app.use('/movies/', moviesRouter); 
+
+// http://localhost:3000/celebrities/create?name=hello&ocupation=actor
+// http://localhost:3000/celebrities/getAll  
+// http://localhost:3000/movies/getAll
+
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
